@@ -2,20 +2,117 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SergeantIO</title>
-    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* Define a CSS variable for the total number of bars */
+        :root {
+            --n: 48;
+        }
+
+        /* --- Global Setup --- */
+        body {
+            margin: 0;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            font-family: sans-serif;
+            
+        }
+
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000; /* Pure Black Background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            perspective: 1000px; /* Crucial for 3D effect */
+        }
+
+        /* --- 3D Container --- */
+        .mobius-strip-container {
+            width: 150px;
+            height: 150px;
+            transform-style: preserve-3d;
+            animation: rotateLoop 8s linear infinite; /* Overall slow spin */
+        }
+
+        /* --- Individual Strip Bar (The Glow) --- */
+        .strip-bar {
+            --bar-height: 150px; 
+            --bar-width: 4px; /* Thickness of the strip */
+            
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-top: calc(var(--bar-height) / -2);
+            
+            width: var(--bar-width);
+            height: var(--bar-height);
+            background: #E0E0E0; /* Bright Silver Core */
+            
+            /* Applying the Intense Glow */
+            box-shadow: 
+                0 0 5px #C0C0C0,
+                0 0 10px #E0E0E0,
+                0 0 20px rgba(255, 255, 255, 0.5); 
+            
+            /* Softens the edges of the bar for a better glow */
+            border-radius: 50%; 
+            
+            /* --- The 3D Transformation (Calculated by JS, applied via 'style' attribute) --- */
+            /* The JS will set the 'transform' property based on its index '--i' */
+        }
+        
+        /* --- Animation Keyframes --- */
+        @keyframes rotateLoop {
+            to {
+                /* A dual rotation for a dynamic, captivating motion */
+                transform: rotateY(360deg) rotateX(360deg); 
+            }
+        }
+    </style>
 </head>
 <body>
 
     <div class="loading-screen">
-    <div class="mobius-strip-container">
-        <div class="strip-bar" style="--i: 0;"></div>
-        <div class="strip-bar" style="--i: 1;"></div>
-        <div class="strip-bar" style="--i: 2;"></div>
-        <div class="strip-bar" style="--i: 47;"></div>
+        <div id="mobiusStripContainer" class="mobius-strip-container">
+            </div>
     </div>
-</div>
 
+    <script>
+        const container = document.getElementById('mobiusStripContainer');
+        const numBars = 48; // Must match the CSS variable --n
+        const radius = 75; // Half of the container width/height (150px)
+
+        for (let i = 0; i < numBars; i++) {
+            const bar = document.createElement('div');
+            bar.className = 'strip-bar';
+            
+            // Calculate the 3D position and twist for the Möbius strip
+            // The magic formula: rotation around Y-axis, translation along Z, and a twist around X
+            const transformValue = `
+                rotateY(${i * 360 / numBars}deg) 
+                translateZ(${radius}px) 
+                rotateX(${i * -180 / numBars}deg) 
+                translateY(-50%)
+            `;
+
+            bar.style.transform = transformValue;
+            container.appendChild(bar);
+        }
+
+        // Optional: Hide the loader after a few seconds for demonstration
+        /*
+        setTimeout(() => {
+            document.querySelector('.loading-screen').style.display = 'none';
+        }, 5000);
+        */
+    </script>
 </body>
 </html>
