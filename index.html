@@ -1,107 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Rotating Hexagons - Transparent Interior</title>
-    <style>
-        /* --- Global Setup --- */
-        body {
-            background-color: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            perspective: 800px;
-            overflow: hidden;
-        }
-
-        /* --- Hexagon Container and Setup --- */
-        .hexagon-container {
-            position: relative;
-            width: 200px; 
-            height: 200px;
-            transform-style: preserve-3d;
-        }
-        
-        /* --- Hexagon Construction (Transparent Interior Fix) --- */
-        
-        .hexagon {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 100%;
-            height: 100%;
-            
-            transform-style: preserve-3d;
-            box-sizing: border-box;
-            
-            /* Clip the element to the hexagon shape */
-            clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
-            
-            /* The element itself is a thick white line with a transparent center */
-            background-color: transparent; 
-            border: 5px solid white; 
-            
-            /* Filter for the glow effect. This works better than box-shadow on clip-path shapes. */
-            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8))
-                    drop-shadow(0 0 10px rgba(255, 255, 255, 0.6))
-                    drop-shadow(0 0 15px rgba(255, 255, 255, 0.4));
-        }
-
-        /* --- Individual Hexagon Scaling and Animation (Different Axes) --- */
-
-        /* Hexagon 1: Rotates on X-axis (100% size) */
-        .hexagon:nth-child(1) {
-            /* Ensuring a solid white border by setting background white and using a transparent pseudo-element */
-            border: 5px solid white;
-            transform: translate(-50%, -50%) scale(1); 
-            animation: rotateXSync 10s linear infinite;
-        }
-
-        /* Hexagon 2: Rotates on Y-axis (80% size) */
-        .hexagon:nth-child(2) {
-            border: 5px solid white;
-            transform: translate(-50%, -50%) scale(0.8); 
-            animation: rotateYSync 12s linear infinite;
-        }
-
-        /* Hexagon 3: Rotates on Z-axis (60% size) */
-        .hexagon:nth-child(3) {
-            border: 5px solid white;
-            transform: translate(-50%, -50%) scale(0.6); 
-            animation: rotateZSync 14s linear infinite;
-        }
-
-        /* --- Keyframe Animations (Synchronized Stop) --- */
-        
-        @keyframes rotateXSync {
-            0% { transform: translate(-50%, -50%) scale(1) rotateX(0deg); }
-            95% { transform: translate(-50%, -50%) scale(1) rotateX(342deg); }
-            100% { transform: translate(-50%, -50%) scale(1) rotateX(360deg); }
-        }
-
-        @keyframes rotateYSync {
-            0% { transform: translate(-50%, -50%) scale(0.8) rotateY(0deg); }
-            95% { transform: translate(-50%, -50%) scale(0.8) rotateY(342deg); }
-            100% { transform: translate(-50%, -50%) scale(0.8) rotateY(360deg); }
-        }
-
-        @keyframes rotateZSync {
-            0% { transform: translate(-50%, -50%) scale(0.6) rotateZ(0deg); }
-            95% { transform: translate(-50%, -50%) scale(0.6) rotateZ(342deg); }
-            100% { transform: translate(-50%, -50%) scale(0.6) rotateZ(360deg); }
-        }
-    </style>
-</head>
-<body>
-
-    <div class="hexagon-container">
-        <div class="hexagon"></div>
-        <div class="hexagon"></div>
-        <div class="hexagon"></div>
-    </div>
-
-</body>
-</html>
+*, *:before, *:after {
+    box-sizing: border-box;
+    }
+    @keyframes loader {
+    from {transform: scale(1) rotateY(0deg) rotateX(0deg) rotateZ(0deg)}
+    to {transform: scale(2) rotateY(180deg) rotateX(180deg) rotateZ(180deg)}
+    }
+    html, body {
+    width: 100%;
+    height: 100%;
+    }
+    body {
+    background:
+    radial-gradient(#101010, black);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    color: white;
+    }
+    .ring {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 3.5rem;
+    height: 3.5rem;
+    border: 5px solid white;
+    /* border-radius: 50%; <--- REMOVED */
+    /* ADDED the clip-path property for hexagon shape */
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    animation: loader 1.5s infinite;
+    animation-timing-function: cubic-bezier(1,0,0,1);
+    animation-direction: alternate;
+    box-shadow:
+    0 0 3px grey inset,
+    0 0 5px white,
+    0 0 3px grey;
+    }
+    .ring:nth-child(2) {
+    animation-delay: 250ms;
+    }
+    .ring:nth-child(3) {
+    animation-delay: 500ms;
+    }
