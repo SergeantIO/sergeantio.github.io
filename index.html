@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SergeantIO</title>
+    <title>3D Rotating Hexagons - Outline Stability Fix</title>
     <style>
         /* --- Global Setup --- */
         body {
@@ -26,70 +26,87 @@
             transform-style: preserve-3d;
         }
         
-        /* --- Hexagon Construction using Clip-Path (Stable Shape) --- */
+        /* --- Hexagon Construction (Outline Stability Fix) --- */
+        
+        /* Hexagon Outer (The white glowing line) */
         .hexagon {
             position: absolute;
             top: 50%;
             left: 50%;
-            
-            /* Use a uniform square base for perfect aspect ratio */
             width: 100%;
             height: 100%;
-            
-            /* Center the element (no need to translate by 50% here, as it uses 100% width/height of parent) */
             transform-style: preserve-3d;
             box-sizing: border-box;
             
-            /* Defines the six points of a stable hexagon */
-            clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
-            
-            /* Fill the shape with transparent color, but add a thick border for the outline */
-            background-color: transparent; 
-            border: 4px solid white; /* Slightly thinner border for a cleaner look */
-
-            /* Applying the glow to the clip-path shape */
+            /* Apply the glow to the entire shape */
             box-shadow: 0 0 5px rgba(255, 255, 255, 0.8),
                         0 0 10px rgba(255, 255, 255, 0.6),
                         0 0 15px rgba(255, 255, 255, 0.4);
+            
+            /* Clip the outer element to the hexagon shape */
+            clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
+            
+            /* This is the white color that creates the line */
+            background-color: white; 
         }
-        
+
+        /* Hexagon Inner (The black center cut-out) */
+        .hexagon::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            /* Make the inner element slightly smaller to reveal the white border */
+            width: 90%; 
+            height: 90%;
+            transform: translate(-50%, -50%);
+            
+            /* Clip the inner element to the hexagon shape */
+            clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
+            
+            /* This is the black color that cuts out the center */
+            background-color: #000; 
+            
+            /* This needs to be preserved for the 3D rotation to work correctly */
+            transform-style: preserve-3d;
+        }
+
+
         /* --- Individual Hexagon Scaling and Animation (Different Axes) --- */
 
-        /* Hexagon 1: Rotates on X-axis (Full Size) */
+        /* Hexagon 1: Rotates on X-axis (100% size) */
         .hexagon:nth-child(1) {
-            transform: translate(-50%, -50%) scale(1); /* 100% size */
+            transform: translate(-50%, -50%) scale(1); 
             animation: rotateXSync 10s linear infinite;
         }
 
-        /* Hexagon 2: Rotates on Y-axis (80% Size) */
+        /* Hexagon 2: Rotates on Y-axis (80% size) */
         .hexagon:nth-child(2) {
             transform: translate(-50%, -50%) scale(0.8); 
             animation: rotateYSync 12s linear infinite;
         }
 
-        /* Hexagon 3: Rotates on Z-axis (60% Size) */
+        /* Hexagon 3: Rotates on Z-axis (60% size) */
         .hexagon:nth-child(3) {
             transform: translate(-50%, -50%) scale(0.6); 
             animation: rotateZSync 14s linear infinite;
         }
 
         /* --- Keyframe Animations (Synchronized Stop) --- */
+        /* The `scale` value is hardcoded into the keyframes now for stability */
 
-        /* Rotates on X-axis */
         @keyframes rotateXSync {
-            0% { transform: translate(-50%, -50%) scale(var(--s, 1)) rotateX(0deg); }
-            95% { transform: translate(-50%, -50%) scale(var(--s, 1)) rotateX(342deg); }
-            100% { transform: translate(-50%, -50%) scale(var(--s, 1)) rotateX(360deg); }
+            0% { transform: translate(-50%, -50%) scale(1) rotateX(0deg); }
+            95% { transform: translate(-50%, -50%) scale(1) rotateX(342deg); }
+            100% { transform: translate(-50%, -50%) scale(1) rotateX(360deg); }
         }
 
-        /* Rotates on Y-axis */
         @keyframes rotateYSync {
             0% { transform: translate(-50%, -50%) scale(0.8) rotateY(0deg); }
             95% { transform: translate(-50%, -50%) scale(0.8) rotateY(342deg); }
             100% { transform: translate(-50%, -50%) scale(0.8) rotateY(360deg); }
         }
 
-        /* Rotates on Z-axis */
         @keyframes rotateZSync {
             0% { transform: translate(-50%, -50%) scale(0.6) rotateZ(0deg); }
             95% { transform: translate(-50%, -50%) scale(0.6) rotateZ(342deg); }
