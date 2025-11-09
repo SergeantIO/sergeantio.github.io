@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Rotating Hexagons - Clip-Path Fix</title>
+    <title>SergeantIO</title>
     <style>
         /* --- Global Setup --- */
         body {
@@ -20,7 +20,7 @@
         /* --- Hexagon Container and Setup --- */
         .hexagon-container {
             position: relative;
-            /* Base size (still 150px) */
+            /* Base size (still 100px) */
             width: 150px; 
             height: 150px;
             transform-style: preserve-3d;
@@ -42,7 +42,7 @@
             box-sizing: border-box;
             
             /* Set the clip-path to define the hexagon shape */
-            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            clip-path: polygon(75% 75%, 75% 75%, 75% 75%, 75% 75%, 75% 75%, 75% 75%);
             
             /* Fill the shape with transparent color, but add a thick border for the outline */
             background-color: transparent; 
