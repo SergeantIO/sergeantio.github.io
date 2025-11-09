@@ -1,30 +1,51 @@
-/* --- New, Cooler Loader Style --- */
+/* --- Base Page Styles (Keep the same black background) --- */
+body {
+    margin: 0;
+    font-family: sans-serif;
+}
+
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000; /* Pure Black Background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+/* --- Hollow, Glowing Silver Loader --- */
 .mobius-strip-loader {
     width: 100px;
     height: 100px;
-    /* Use a very thin, bright silver-white border */
-    border: 3px solid #f0f0f0; 
-    border-top-color: transparent; /* Makes the break point */
     border-radius: 50%;
     
-    /* Apply a distinct, subtle rotation */
-    animation: spin 1.2s cubic-bezier(0.5, 0.25, 0.75, 1) infinite;
+    /* 1. Hollow Effect: Use a transparent border that appears to be the "hollow" section */
+    border: 8px solid transparent; 
     
-    /* ADD THE SILVER GLOW EFFECT */
-    box-shadow: 0 0 10px rgba(192, 192, 192, 0.7), /* Subtle glow */
-                0 0 20px rgba(192, 192, 192, 0.3); /* Wider, softer glow */
+    /* 2. Silver Color and Partial Border: Define the visible part of the strip */
+    border-top-color: #E0E0E0; /* Bright Silver */
+    border-bottom-color: #E0E0E0; /* Bright Silver */
+    
+    /* 3. Intense Glow: Use multiple box shadows for a strong halo effect */
+    box-shadow: 
+        0 0 10px #C0C0C0, /* Inner soft silver glow */
+        0 0 20px #E0E0E0, /* Brighter silver glow */
+        0 0 40px rgba(255, 255, 255, 0.5); /* Ethereal white outer haze */
+
+    /* 4. Filter for Extra Glow: Adds a slight blurring/bloom effect */
+    filter: drop-shadow(0 0 5px #C0C0C0);
+    
+    /* 5. Rotation Animation: Smooth, continuous spin */
+    animation: spin 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite; 
 }
 
-/* Base keyframes (unchanged) */
+/* --- Rotation Keyframes --- */
 @keyframes spin {
     to {
         transform: rotate(360deg);
     }
-}
-
-/* Ensure the background is pure black for max contrast */
-.loading-screen {
-    position: fixed;
-    /* ... other centering properties ... */
-    background-color: #000; 
 }
