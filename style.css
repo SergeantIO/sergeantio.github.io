@@ -1,59 +1,30 @@
-/* --- Base Page Styles --- */
-body {
-    margin: 0;
-    font-family: sans-serif;
-}
-
-/* --- Loading Screen Overlay --- */
-.loading-screen {
-    /* Covers the entire viewport */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    /* Black background */
-    background-color: #000; 
-    /* Centers the loader using Flexbox */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999; /* Ensure it's on top of everything */
-}
-
-/* --- Placeholder Loader (Silver Rotating Circle) --- */
+/* --- New, Cooler Loader Style --- */
 .mobius-strip-loader {
-    /* Define size and silver color */
-    width: 80px;
-    height: 80px;
-    border: 8px solid transparent;
-    border-top-color: #C0C0C0; /* Silver top border */
+    width: 100px;
+    height: 100px;
+    /* Use a very thin, bright silver-white border */
+    border: 3px solid #f0f0f0; 
+    border-top-color: transparent; /* Makes the break point */
     border-radius: 50%;
     
-    /* Apply the rotation animation */
-    animation: spin 1.5s linear infinite;
+    /* Apply a distinct, subtle rotation */
+    animation: spin 1.2s cubic-bezier(0.5, 0.25, 0.75, 1) infinite;
     
-    /* Placeholder for the strip element (optional styling) */
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    /* ADD THE SILVER GLOW EFFECT */
+    box-shadow: 0 0 10px rgba(192, 192, 192, 0.7), /* Subtle glow */
+                0 0 20px rgba(192, 192, 192, 0.3); /* Wider, softer glow */
 }
 
-/* The inner div can be used for the actual Möbius strip construction */
-.strip-element {
-    /* Example: a simple silver dot inside the spinner */
-    width: 20px;
-    height: 20px;
-    background-color: #C0C0C0; /* Silver */
-    border-radius: 50%;
-}
-
-/* --- Rotation Keyframes --- */
+/* Base keyframes (unchanged) */
 @keyframes spin {
     to {
         transform: rotate(360deg);
     }
 }
 
-/* Optional: Hide the loading screen with JavaScript when page content is ready */
-/* .loading-screen.hidden { display: none; } */
+/* Ensure the background is pure black for max contrast */
+.loading-screen {
+    position: fixed;
+    /* ... other centering properties ... */
+    background-color: #000; 
+}
