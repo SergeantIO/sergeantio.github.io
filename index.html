@@ -33,7 +33,7 @@
             height: 120px;
         }
 
-        /* --- Individual Ring Styles --- */
+        /* --- Base Ring Styles (Applied to all) --- */
         .ring {
             position: absolute;
             top: 0;
@@ -42,58 +42,62 @@
             height: 100%;
             border-radius: 50%;
             
-            /* The Arc Effect: To create a 180-degree half-circle, we apply the silver color 
-               to two opposite borders (top and left) and make the other two transparent.
-               This leaves a clean 180-degree arc. */
+            /* Half-Circle Arc: Top and left borders visible, right and bottom transparent. */
             border: 5px solid #E0E0E0; /* Default Silver Color */
-            border-right-color: transparent; /* Makes the right side invisible */
-            border-bottom-color: transparent; /* Makes the bottom side invisible */
-            
-            /* Consistent Glowing Silver Effect for ALL rings */
-            box-shadow: 
-                0 0 10px #C0C0C0,
-                0 0 20px #E0E0E0,
-                0 0 40px rgba(255, 255, 255, 0.5);
+            border-right-color: transparent; 
+            border-bottom-color: transparent; 
                 
             transform-origin: center;
         }
 
-        /* --- Ring 1: Outer Ring (Slow Spin) --- */
+        /* --- Ring 1: Outer Ring (Spins, NO Glow) --- */
         .ring:nth-child(1) {
+            /* Spins Clockwise */
             animation: spin 6s linear infinite;
-            /* Initial rotation to position the half-circle */
+            /* NO box-shadow here, only the two inner rings will glow */
+            /* Initial rotation */
             transform: rotate(-90deg); 
         }
 
-        /* --- Ring 2: Middle Ring (Medium Spin) --- */
+        /* --- Ring 2: Middle Ring (Static, GLOWS) --- */
         .ring:nth-child(2) {
+            /* Static: No animation */
             /* Smaller size and position */
             width: 80%;
             height: 80%;
             top: 10%;
             left: 10%;
             
-            /* Faster spin */
-            animation: spin 4s linear infinite;
-            /* Position the half-circle 120 degrees away from Ring 1 */
+            /* GLOW EFFECT added here */
+            box-shadow: 
+                0 0 10px #C0C0C0,
+                0 0 20px #E0E0E0,
+                0 0 40px rgba(255, 255, 255, 0.5);
+            
+            /* Initial rotation */
             transform: rotate(30deg); 
         }
 
-        /* --- Ring 3: Inner Ring (Fast Spin) --- */
+        /* --- Ring 3: Inner Ring (Static, GLOWS) --- */
         .ring:nth-child(3) {
+            /* Static: No animation */
             /* Smallest size and position */
             width: 60%;
             height: 60%;
             top: 20%;
             left: 20%;
 
-            /* Fastest spin */
-            animation: spin 2s linear infinite;
-            /* Position the half-circle 240 degrees away from Ring 1 */
+            /* GLOW EFFECT added here */
+            box-shadow: 
+                0 0 10px #C0C0C0,
+                0 0 20px #E0E0E0,
+                0 0 40px rgba(255, 255, 255, 0.5);
+
+            /* Initial rotation */
             transform: rotate(150deg); 
         }
 
-        /* --- Keyframe Animation: Clockwise Spin (Applies to all rings) --- */
+        /* --- Keyframe Animation: Clockwise Spin (Only used by Ring 1) --- */
         @keyframes spin {
             0% {
                 transform: rotate(0deg); 
