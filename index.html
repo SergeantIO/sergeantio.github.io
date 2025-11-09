@@ -2,15 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SergeantIO</title>
+    <title>6-Ring Glass Axis Spinner</title>
     
     <style>
-        /* --- Global Setup --- */
+        /* --- Global Setup & Black Background --- */
         body {
             margin: 0;
             height: 100vh;
             width: 100vw;
             overflow: hidden;
+            background-color: #000; /* Pure Black Background */
+            /* Add perspective for a better 3D look */
+            perspective: 800px;
         }
 
         .loading-screen {
@@ -19,21 +22,23 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #000; /* Pure Black Background */
+            background-color: transparent;
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 9999;
         }
 
-        /* --- Ring Container (Holds the three rings) --- */
+        /* --- Ring Container (Holds all 6 rings) --- */
         .pulsar-ring-container {
             position: relative;
-            width: 120px;
-            height: 120px;
+            width: 200px; /* Larger container for 6 rings */
+            height: 200px;
+            /* Center the entire structure in 3D space */
+            transform-style: preserve-3d;
         }
 
-        /* --- Base Ring Styles (Applied to all) --- */
+        /* --- Base Ring Styles (Glassmorphism) --- */
         .ring {
             position: absolute;
             top: 0;
@@ -42,76 +47,105 @@
             height: 100%;
             border-radius: 50%;
             
-            /* Half-Circle Arc: Top and left borders visible, right and bottom transparent. */
-            border: 5px solid #E0E0E0; /* Default Silver Color */
+            /* Half-Circle Arc: Top and left borders visible, rest transparent */
+            border: 4px solid rgba(255, 255, 255, 0.5); /* Subtle white border */
             border-right-color: transparent; 
             border-bottom-color: transparent; 
-                
+
+            /* Glass Effect */
+            background-color: rgba(255, 255, 255, 0.05); /* Very light, subtle fill */
+            backdrop-filter: blur(4px);
+            
             transform-origin: center;
         }
 
-        /* --- Ring 1: Outer Ring (Spins, NO Glow) --- */
+        /* --- Custom Sizing, Rotation Axes, and Speed for each Ring --- */
+
+        /* Ring 1 (Outer) */
         .ring:nth-child(1) {
-            /* Spins Clockwise */
-            animation: spin 6s linear infinite;
-            /* NO box-shadow here, only the two inner rings will glow */
-            /* Initial rotation */
-            transform: rotate(-90deg); 
+            width: 100%; height: 100%;
+            top: 0%; left: 0%;
+            /* Rotate on X and Y axis, Slowest Speed */
+            animation: spin1 10s linear infinite;
         }
 
-        /* --- Ring 2: Middle Ring (Static, GLOWS) --- */
+        /* Ring 2 */
         .ring:nth-child(2) {
-            /* Static: No animation */
-            /* Smaller size and position */
-            width: 80%;
-            height: 80%;
-            top: 10%;
-            left: 10%;
-            
-            /* GLOW EFFECT added here */
-            box-shadow: 
-                0 0 10px #C0C0C0,
-                0 0 20px #E0E0E0,
-                0 0 40px rgba(255, 255, 255, 0.5);
-            
-            /* Initial rotation */
-            transform: rotate(30deg); 
+            width: 90%; height: 90%;
+            top: 5%; left: 5%;
+            /* Rotate on Y axis only, Medium Speed */
+            animation: spin2 6s linear infinite;
         }
 
-        /* --- Ring 3: Inner Ring (Static, GLOWS) --- */
+        /* Ring 3 */
         .ring:nth-child(3) {
-            /* Static: No animation */
-            /* Smallest size and position */
-            width: 60%;
-            height: 60%;
-            top: 20%;
-            left: 20%;
-
-            /* GLOW EFFECT added here */
-            box-shadow: 
-                0 0 10px #C0C0C0,
-                0 0 20px #E0E0E0,
-                0 0 40px rgba(255, 255, 255, 0.5);
-
-            /* Initial rotation */
-            transform: rotate(150deg); 
+            width: 80%; height: 80%;
+            top: 10%; left: 10%;
+            /* Rotate on Z and X axis, Faster Speed, initial tilt */
+            animation: spin3 8s linear infinite;
         }
 
-        /* --- Keyframe Animation: Clockwise Spin (Only used by Ring 1) --- */
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg); 
-            }
-            100% {
-                transform: rotate(360deg);
-            }
+        /* Ring 4 */
+        .ring:nth-child(4) {
+            width: 70%; height: 70%;
+            top: 15%; left: 15%;
+            /* Rotate on Z axis only, Fast Speed */
+            animation: spin4 5s linear infinite;
+        }
+
+        /* Ring 5 */
+        .ring:nth-child(5) {
+            width: 60%; height: 60%;
+            top: 20%; left: 20%;
+            /* Rotate on X axis, Slower Speed, opposite direction */
+            animation: spin5 9s linear infinite;
+        }
+        
+        /* Ring 6 (Inner) */
+        .ring:nth-child(6) {
+            width: 50%; height: 50%;
+            top: 25%; left: 25%;
+            /* Rotate on Y axis, Fastest Speed */
+            animation: spin6 4s linear infinite;
+        }
+
+        /* --- Keyframe Animations: Different Rotations for Different Axes --- */
+
+        @keyframes spin1 {
+            0% { transform: rotateY(0deg) rotateX(0deg); }
+            100% { transform: rotateY(360deg) rotateX(360deg); }
+        }
+
+        @keyframes spin2 {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(-360deg); } /* Reverse spin on Y */
+        }
+
+        @keyframes spin3 {
+            0% { transform: rotateZ(0deg) rotateX(45deg); } /* Initial tilt for Z-spin */
+            100% { transform: rotateZ(360deg) rotateX(45deg); }
+        }
+
+        @keyframes spin4 {
+            0% { transform: rotateZ(0deg); }
+            100% { transform: rotateZ(-360deg); } /* Reverse spin on Z */
+        }
+
+        @keyframes spin5 {
+            0% { transform: rotateX(0deg); }
+            100% { transform: rotateX(-360deg); } /* Reverse spin on X */
+        }
+        
+        @keyframes spin6 {
+            0% { transform: rotateY(0deg) rotateX(90deg); } /* Tilted on X-axis */
+            100% { transform: rotateY(360deg) rotateX(90deg); }
         }
     </style>
 </head>
 <body>
     <div class="loading-screen">
         <div class="pulsar-ring-container">
-            <div class="ring"></div> <div class="ring"></div> <div class="ring"></div> </div>
+            <div class="ring"></div> <div class="ring"></div> <div class="ring"></div> <div class="ring"></div> <div class="ring"></div> <div class="ring"></div> </div>
     </div>
 </body>
 </html>
