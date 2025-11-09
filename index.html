@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SergeantIO</title>
+    <title>3D Rotating Glowing Hexagons</title>
     <style>
+        /* --- Global Setup --- */
         body {
             background-color: #000;
             display: flex;
@@ -12,89 +13,116 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            overflow: hidden; /* Prevent scroll bars if animation slightly exceeds viewport */
+            perspective: 1000px; /* Add perspective for the 3D effect */
+            overflow: hidden;
         }
 
         /* --- Hexagon Container and Setup --- */
-
         .hexagon-container {
             position: relative;
-            width: 300px; /* Base size for the largest hexagon */
-            height: 300px;
+            /* HALF THE ORIGINAL SIZE */
+            width: 150px; 
+            height: 150px;
+            transform-style: preserve-3d; /* Key for 3D nested elements */
+            animation: rotateYContainer 20s linear infinite; /* Slow 3D rotation of the entire group */
+        }
+        
+        /* Keyframe for the entire container rotation (3D effect) */
+        @keyframes rotateYContainer {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
         }
 
         .hexagon {
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%) rotate(0deg); /* Initial position for all */
-            border: 2px solid white;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.8),
-                        0 0 20px rgba(255, 255, 255, 0.6),
-                        0 0 30px rgba(255, 255, 255, 0.4);
-            /* Mask to 'cut' the corners off - this creates the missing-corner effect */
-            -webkit-mask: polygon(
-                25% 0%, /* Skip first corner */
-                75% 0%,
-                100% 25%, /* Skip second corner */
-                100% 75%,
-                75% 100%, /* Skip third corner */
-                25% 100%,
-                0% 75%, /* Skip fourth corner */
-                0% 25%
-            );
-            mask: polygon(
-                25% 0%, /* Skip first corner */
-                75% 0%,
-                100% 25%, /* Skip second corner */
-                100% 75%,
-                75% 100%, /* Skip third corner */
-                25% 100%,
-                0% 75%, /* Skip fourth corner */
-                0% 25%
-            );
+            /* Base size for the hexagon side */
+            --hex-size: 100px; 
+            width: var(--hex-size);
+            height: calc(var(--hex-size) * 1.732); /* Height is side * sqrt(3) */
+            transform: translate(-50%, -50%); /* Center the element */
+            box-sizing: border-box;
+            
+            /* Border and Glow */
+            border-left: 2px solid white;
+            border-right: 2px solid white;
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.8),
+                        0 0 10px rgba(255, 255, 255, 0.6),
+                        0 0 15px rgba(255, 255, 255, 0.4);
+            
+            /* Animation applied individually for rotation */
+            transform-style: preserve-3d;
         }
 
-        /* --- Individual Hexagon Sizing and Animation --- */
+        /* --- Hexagon Construction using Pseudo-elements --- */
 
-        /* Outer Hexagon */
-        .hexagon:nth-child(1) {
+        .hexagon:before, .hexagon:after {
+            content: "";
+            position: absolute;
             width: 100%;
             height: 100%;
+            border: 2px solid white;
+            
+            /* Match Glow */
+            box-shadow: inherit;
+        }
+
+        .hexagon:before {
+            transform: rotate(60deg);
+        }
+
+        .hexagon:after {
+            transform: rotate(-60deg);
+        }
+
+        /* --- Corner-Missing Mask (Modified from the square method) --- */
+        /* To simulate missing corners on the true hexagon, we use a clip-path.
+           This is more reliable for complex shapes. The percentages are adjusted
+           to cut off the sharp points while maintaining the hexagonal look. */
+        .hexagon, .hexagon:before, .hexagon:after {
+             clip-path: polygon(
+                10% 0%, 90% 0%, /* Cut top corners */
+                100% 50%, 90% 100%, 10% 100%, /* Maintain center sides */
+                0% 50% /* Cut bottom corners */
+             );
+        }
+        
+        /* --- Individual Hexagon Sizing and Animation --- */
+
+        /* Outer Hexagon (Largest size) */
+        .hexagon:nth-child(1) {
+            --hex-size: 150px; /* Outer side length */
             animation: rotate1 10s linear infinite;
         }
 
-        /* Middle Hexagon */
+        /* Middle Hexagon (80% of Outer) */
         .hexagon:nth-child(2) {
-            width: 80%;
-            height: 80%;
+            --hex-size: 120px; /* 80% of 150px */
             animation: rotate2 12s linear infinite;
         }
 
-        /* Inner Hexagon */
+        /* Inner Hexagon (60% of Outer) */
         .hexagon:nth-child(3) {
-            width: 60%;
-            height: 60%;
+            --hex-size: 90px; /* 60% of 150px */
             animation: rotate3 14s linear infinite;
         }
 
-        /* --- Keyframe Animations --- */
+        /* --- Keyframe Animations (Synchronized Stop) --- */
+        /* Rotates the hexagon around its Z axis (flat rotation) */
 
-        /* Animation for Outer Hexagon (10s rotation) */
         @keyframes rotate1 {
             0% { transform: translate(-50%, -50%) rotate(0deg); }
-            95% { transform: translate(-50%, -50%) rotate(342deg); } /* Ends slightly before full rotation */
-            100% { transform: translate(-50%, -50%) rotate(360deg); } /* Synchronizes at 360deg (same as 0deg) */
+            95% { transform: translate(-50%, -50%) rotate(342deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); } /* Synchronizes at 360deg (0deg) */
         }
 
-        /* Animation for Middle Hexagon (12s rotation) */
         @keyframes rotate2 {
             0% { transform: translate(-50%, -50%) rotate(0deg); }
             95% { transform: translate(-50%, -50%) rotate(342deg); }
             100% { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
-        /* Animation for Inner Hexagon (14s rotation) */
         @keyframes rotate3 {
             0% { transform: translate(-50%, -50%) rotate(0deg); }
             95% { transform: translate(-50%, -50%) rotate(342deg); }
