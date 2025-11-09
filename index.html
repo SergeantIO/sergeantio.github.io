@@ -79,4 +79,33 @@
 
         /* --- Ring 3: Inner Ring (Fast Spin) --- */
         .ring:nth-child(3) {
-            /* Smallest size and position
+            /* Smallest size and position */
+            width: 60%;
+            height: 60%;
+            top: 20%;
+            left: 20%;
+
+            /* Fastest spin */
+            animation: spin 2s linear infinite;
+            /* Position the arc 240 degrees away from Ring 1 */
+            transform: rotate(230deg); /* -10 + 240 = 230 */
+        }
+
+        /* --- Keyframe Animation: Clockwise Spin --- */
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg); 
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-screen">
+        <div class="pulsar-ring-container">
+            <div class="ring"></div> <div class="ring"></div> <div class="ring"></div> </div>
+    </div>
+</body>
+</html>
