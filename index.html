@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SergeantIO</title>
+    <title>3-Ring Hexagonal 3D Spinner</title>
     
     <style>
         /* --- Global Setup & Black Background --- */
@@ -28,7 +28,7 @@
             z-index: 9999;
         }
 
-        /* --- Ring Container (Holds all 3 rings) --- */
+        /* --- Ring Container (Holds all 3 hexagons) --- */
         .pulsar-ring-container {
             position: relative;
             width: 200px; 
@@ -36,21 +36,29 @@
             transform-style: preserve-3d;
         }
 
-        /* --- Base Ring Styles (Opaque White & Hollow) --- */
+        /* --- Base Hexagon Styles (Glow, Opaque White & Hollow) --- */
         .ring {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            border-radius: 50%;
             
-            /* COMPLETE OPAQUE RING BORDER */
+            /* 1. SHAPE: Define a hexagon using clip-path */
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+            
+            /* 2. HOLLOW EFFECT: Use border and transparency to make it hollow */
             border: 4px solid white; 
+            
+            /* 3. GLOW EFFECT: Added to the border/shape */
+            box-shadow: 
+                0 0 5px #FFFFFF,
+                0 0 10px #D0D0D0,
+                0 0 20px rgba(255, 255, 255, 0.5);
             
             transform-origin: center;
             
-            /* SYNCHRONIZATION: All rings now share the same 6s duration */
+            /* SYNCHRONIZATION: All shapes share the same 6s duration */
             animation-duration: 6s;
             animation-timing-function: linear;
             animation-iteration-count: infinite;
@@ -58,21 +66,21 @@
 
         /* --- Custom Sizing and Animation Assignment --- */
 
-        /* Ring 1 (Outer - X & Y Spin) */
+        /* Hexagon 1 (Outer - X & Y Spin) */
         .ring:nth-child(1) {
             width: 100%; height: 100%;
             top: 0%; left: 0%;
             animation-name: spin1;
         }
 
-        /* Ring 2 (Middle - Was Ring 3 - Z & X Spin with REDUCED TILT) */
+        /* Hexagon 2 (Middle - Y & Z Spin, Slight Tilt) */
         .ring:nth-child(2) {
-            width: 70%; height: 70%; /* Size adjusted to look like the middle ring */
+            width: 70%; height: 70%; 
             top: 15%; left: 15%;
-            animation-name: spin2; 
+            animation-name: spin2-fixed;
         }
 
-        /* Ring 3 (Inner - Was Ring 6 - All 3 Axes Spin) */
+        /* Hexagon 3 (Inner - All 3 Axes Spin) */
         .ring:nth-child(3) {
             width: 40%; height: 40%;
             top: 30%; left: 30%;
@@ -86,10 +94,9 @@
             100% { transform: rotateY(360deg) rotateX(360deg); }
         }
 
-        @keyframes spin2 { /* Ring 2 (Middle): Z & X Axis Spin (TILT REDUCED to 15 degrees) */
-            /* The X-axis tilt is now 15deg instead of 45deg to reduce the oval appearance */
-            0% { transform: rotateZ(0deg) rotateX(15deg); } 
-            100% { transform: rotateZ(360deg) rotateX(15deg); }
+        @keyframes spin2-fixed { /* Ring 2 (Middle): Y & Z Axis Spin (TILT REDUCED) */
+            0% { transform: rotateY(0deg) rotateZ(0deg) rotateX(15deg); } 
+            100% { transform: rotateY(360deg) rotateZ(360deg) rotateX(15deg); }
         }
 
         @keyframes spin3 { /* Ring 3 (Inner): All 3 Axes Spin */
