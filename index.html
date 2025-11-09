@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>SergeantIO</title>
+    <title>Seamless Möbius Loader</title>
     
     <style>
-        /* Define a CSS variable for the total number of bars */
+        /* Increase the number of bars for a smoother, better-connected strip */
         :root {
-            --n: 48;
+            --n: 72;
         }
 
         /* --- Global Setup --- */
@@ -16,8 +16,6 @@
             height: 100vh;
             width: 100vw;
             overflow: hidden;
-            font-family: sans-serif;
-            
         }
 
         .loading-screen {
@@ -26,54 +24,53 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #000; /* Pure Black Background */
+            background-color: #000; 
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            perspective: 1000px; /* Crucial for 3D effect */
+            perspective: 1000px; 
         }
 
-        /* --- 3D Container --- */
+        /* --- 3D Container: Now only rotates on the Y-axis for clarity --- */
         .mobius-strip-container {
             width: 150px;
             height: 150px;
             transform-style: preserve-3d;
-            animation: rotateLoop 8s linear infinite; /* Overall slow spin */
+            
+            /* Simplified rotation for a clear "strip is spinning" look */
+            animation: rotateYAxis 8s linear infinite; 
         }
 
         /* --- Individual Strip Bar (The Glow) --- */
         .strip-bar {
             --bar-height: 150px; 
-            --bar-width: 4px; /* Thickness of the strip */
+            --bar-width: 3px; /* Slightly thinner bar for better spacing */
             
             position: absolute;
             top: 50%;
             left: 50%;
-            margin-top: calc(var(--bar-height) / -2);
+            /* Centers the bar vertically */
+            margin-top: calc(var(--bar-height) / -2); 
             
             width: var(--bar-width);
             height: var(--bar-height);
             background: #E0E0E0; /* Bright Silver Core */
             
-            /* Applying the Intense Glow */
+            /* Intense Glowing Silver Effect (unchanged) */
             box-shadow: 
                 0 0 5px #C0C0C0,
                 0 0 10px #E0E0E0,
                 0 0 20px rgba(255, 255, 255, 0.5); 
             
-            /* Softens the edges of the bar for a better glow */
+            /* Softens the edges */
             border-radius: 50%; 
-            
-            /* --- The 3D Transformation (Calculated by JS, applied via 'style' attribute) --- */
-            /* The JS will set the 'transform' property based on its index '--i' */
         }
         
         /* --- Animation Keyframes --- */
-        @keyframes rotateLoop {
+        @keyframes rotateYAxis {
             to {
-                /* A dual rotation for a dynamic, captivating motion */
-                transform: rotateY(360deg) rotateX(360deg); 
+                transform: rotateY(360deg); /* Clear, continuous spin on the vertical axis */
             }
         }
     </style>
@@ -87,15 +84,17 @@
 
     <script>
         const container = document.getElementById('mobiusStripContainer');
-        const numBars = 48; // Must match the CSS variable --n
-        const radius = 75; // Half of the container width/height (150px)
+        const numBars = 72; // Increased resolution
+        const radius = 75; 
 
         for (let i = 0; i < numBars; i++) {
             const bar = document.createElement('div');
             bar.className = 'strip-bar';
             
-            // Calculate the 3D position and twist for the Möbius strip
-            // The magic formula: rotation around Y-axis, translation along Z, and a twist around X
+            // The essential 3D calculation:
+            // 1. RotateY: Positions the bar around the circle.
+            // 2. TranslateZ: Pushes the bar out to form the circle's radius.
+            // 3. RotateX: Applies the twist (180 degrees over the full loop) that defines the Möbius strip.
             const transformValue = `
                 rotateY(${i * 360 / numBars}deg) 
                 translateZ(${radius}px) 
@@ -106,13 +105,6 @@
             bar.style.transform = transformValue;
             container.appendChild(bar);
         }
-
-        // Optional: Hide the loader after a few seconds for demonstration
-        /*
-        setTimeout(() => {
-            document.querySelector('.loading-screen').style.display = 'none';
-        }, 5000);
-        */
     </script>
 </body>
 </html>
