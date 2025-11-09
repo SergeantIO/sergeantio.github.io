@@ -12,7 +12,8 @@
             width: 100vw;
             overflow: hidden;
             background-color: #000; /* Pure Black Background */
-            /* Removed perspective since all rings now spin on the Z-axis (flat 2D spin) */
+            /* Re-adding perspective is optional here since we're mostly on the Z-axis, 
+               but we'll keep it simple for a solid 2D-spin */
         }
 
         .loading-screen {
@@ -33,7 +34,6 @@
             position: relative;
             width: 200px; 
             height: 200px;
-            /* No need for transform-style: preserve-3d; if we only use Z-axis rotation */
         }
 
         /* --- Base Ring Styles (Opaque White & Hollow) --- */
@@ -49,59 +49,70 @@
             border: 4px solid white; /* Fully opaque white color */
             
             transform-origin: center;
-            
-            /* --- SYNCHRONIZATION: All rings use the same animation settings --- */
-            animation: synchronize-spin 6s linear infinite;
+            /* All rings will have an animation, defined in the nth-child selectors below */
         }
 
-        /* --- Custom Sizing Only (All rings use the same animation) --- */
+        /* --- Custom Sizing, Speed, and Direction for each Ring --- */
 
-        /* Ring 1 (Outer) */
+        /* Ring 1 (Outer - Clockwise, Slow) */
         .ring:nth-child(1) {
             width: 100%; height: 100%;
             top: 0%; left: 0%;
+            animation: clockwise-spin 10s linear infinite;
         }
 
-        /* Ring 2 */
+        /* Ring 2 (Counter-Clockwise, Medium) */
         .ring:nth-child(2) {
             width: 90%; height: 90%;
             top: 5%; left: 5%;
+            animation: counter-spin 7s linear infinite;
         }
 
-        /* Ring 3 */
+        /* Ring 3 (Clockwise, Medium-Fast) */
         .ring:nth-child(3) {
             width: 80%; height: 80%;
             top: 10%; left: 10%;
+            animation: clockwise-spin 8s linear infinite;
         }
 
-        /* Ring 4 */
+        /* Ring 4 (Counter-Clockwise, Fastest) */
         .ring:nth-child(4) {
             width: 70%; height: 70%;
             top: 15%; left: 15%;
+            animation: counter-spin 5s linear infinite;
         }
 
-        /* Ring 5 */
+        /* Ring 5 (Clockwise, Slowest) */
         .ring:nth-child(5) {
             width: 60%; height: 60%;
             top: 20%; left: 20%;
+            animation: clockwise-spin 9s linear infinite;
         }
         
-        /* Ring 6 (Inner) */
+        /* Ring 6 (Inner - Counter-Clockwise, Fast) */
         .ring:nth-child(6) {
             width: 50%; height: 50%;
             top: 25%; left: 25%;
+            animation: counter-spin 6s linear infinite;
         }
 
-        /* --- Keyframe Animation: Single Z-Axis Rotation --- */
+        /* --- Keyframe Animations: Defined by Direction --- */
 
-        @keyframes synchronize-spin {
-            /* 0% to 100% happens over 6 seconds. */
+        @keyframes clockwise-spin {
             0% { 
                 transform: rotate(0deg); 
             }
             100% { 
-                /* All rings return to 360deg (which looks like 0deg) at the same time. */
                 transform: rotate(360deg);
+            }
+        }
+
+        @keyframes counter-spin {
+            0% { 
+                transform: rotate(0deg); 
+            }
+            100% { 
+                transform: rotate(-360deg); /* Negative angle for counter-clockwise */
             }
         }
     </style>
