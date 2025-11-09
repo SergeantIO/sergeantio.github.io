@@ -28,7 +28,7 @@
             z-index: 9999;
         }
 
-        /* --- Ring Container (Holds all 3 hexagons) --- */
+        /* --- Ring Container (Holds all 3 shapes) --- */
         .pulsar-ring-container {
             position: relative;
             width: 200px; 
@@ -36,7 +36,7 @@
             transform-style: preserve-3d;
         }
 
-        /* --- Base Hexagon Styles (Glow, Opaque White & Hollow) --- */
+        /* --- Base Shape Styles (Glow, Opaque White & Hollow) --- */
         .ring {
             position: absolute;
             top: 0;
@@ -44,18 +44,25 @@
             width: 100%;
             height: 100%;
             
-            /* 1. SHAPE: Define a hexagon using clip-path */
+            /* 1. SHAPE: Use clip-path to define the hexagonal/cut-corner shape */
             clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
             
-            /* 2. HOLLOW EFFECT: Use border and transparency to make it hollow */
-            border: 4px solid white; 
+            /* 2. HOLLOW EFFECT: Use background and inner box-shadow to mask the fill */
+            background-color: transparent;
             
-            /* 3. GLOW EFFECT: Added to the border/shape */
+            /* 3. BORDERS: Use a combination of box-shadows to define the four straight bars */
+            /* The color and glow are now entirely managed by the box-shadow property */
             box-shadow: 
-                0 0 5px #FFFFFF,
+                /* Opaque White Bars: Top, Right, Bottom, Left */
+                0 -2px 0 0 white, 
+                2px 0 0 0 white, 
+                0 2px 0 0 white, 
+                -2px 0 0 0 white,
+                
+                /* GLOW EFFECT: Use a second set of shadows for the glow */
                 0 0 10px #D0D0D0,
                 0 0 20px rgba(255, 255, 255, 0.5);
-            
+                
             transform-origin: center;
             
             /* SYNCHRONIZATION: All shapes share the same 6s duration */
@@ -64,7 +71,7 @@
             animation-iteration-count: infinite;
         }
 
-        /* --- Custom Sizing and Animation Assignment --- */
+        /* --- Custom Sizing and Animation Assignment (No changes needed here) --- */
 
         /* Hexagon 1 (Outer - X & Y Spin) */
         .ring:nth-child(1) {
@@ -87,7 +94,7 @@
             animation-name: spin3;
         }
 
-        /* --- Keyframe Animations: All complete a full rotation in 6 seconds --- */
+        /* --- Keyframe Animations (No changes needed here) --- */
 
         @keyframes spin1 { /* Ring 1: X & Y Axis Spin */
             0% { transform: rotateY(0deg) rotateX(0deg); }
