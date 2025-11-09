@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi-Axis Rotating Hexagons</title>
+    <title>Multi-Axis Rotating Hexagons (Star Removed)</title>
     <style>
         /* --- Global Setup --- */
         body {
@@ -13,7 +13,7 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            perspective: 800px; /* Stronger perspective for a clear 3D effect */
+            perspective: 800px;
             overflow: hidden;
         }
 
@@ -22,21 +22,20 @@
             position: relative;
             width: 150px; 
             height: 150px;
-            transform-style: preserve-3d; /* Key for 3D nested elements */
+            transform-style: preserve-3d;
         }
         
         .hexagon {
             position: absolute;
             top: 50%;
             left: 50%;
-            /* Base size for the hexagon side (adjusts for each child) */
             --hex-size: 100px; 
             width: var(--hex-size);
-            height: calc(var(--hex-size) * 1.732); /* Height is side * sqrt(3) */
-            transform: translate(-50%, -50%); /* Center the element */
+            height: calc(var(--hex-size) * 1.732);
+            transform: translate(-50%, -50%);
             box-sizing: border-box;
             
-            /* Border and Glow */
+            /* Main Element Borders (Outer Edges) */
             border-left: 2px solid white;
             border-right: 2px solid white;
             box-shadow: 0 0 5px rgba(255, 255, 255, 0.8),
@@ -44,18 +43,20 @@
                         0 0 15px rgba(255, 255, 255, 0.4);
             
             transform-style: preserve-3d;
-            /* Animation will be set in the individual child selectors */
         }
 
-        /* --- Hexagon Construction (NO corner elimination) --- */
+        /* --- Hexagon Construction (Star Artifact Fix) --- */
 
         .hexagon:before, .hexagon:after {
             content: "";
             position: absolute;
             width: 100%;
             height: 100%;
-            border: 2px solid white;
-            box-shadow: inherit;
+            
+            /* 💥 FIX: Border removed to eliminate the internal star shape */
+            border: 2px solid transparent; 
+            
+            box-shadow: inherit; 
         }
 
         .hexagon:before {
@@ -66,8 +67,7 @@
             transform: rotate(-60deg);
         }
         
-        /* The clip-path is removed entirely to show sharp corners. */
-        /* We DO need to remove the clip-path applied to the pseudo-elements in the previous version */
+        /* Ensure no clip-path from previous iterations */
         .hexagon, .hexagon:before, .hexagon:after {
             clip-path: none; 
         }
@@ -75,19 +75,19 @@
         
         /* --- Individual Hexagon Sizing and Animation --- */
 
-        /* Hexagon 1: Rotates on X-axis (tilts up/down) */
+        /* Hexagon 1: Rotates on X-axis */
         .hexagon:nth-child(1) {
             --hex-size: 150px; 
             animation: rotateXSync 10s linear infinite;
         }
 
-        /* Hexagon 2: Rotates on Y-axis (tilts side to side) */
+        /* Hexagon 2: Rotates on Y-axis */
         .hexagon:nth-child(2) {
             --hex-size: 120px; 
             animation: rotateYSync 12s linear infinite;
         }
 
-        /* Hexagon 3: Rotates on Z-axis (flat spin, like the previous version) */
+        /* Hexagon 3: Rotates on Z-axis */
         .hexagon:nth-child(3) {
             --hex-size: 90px; 
             animation: rotateZSync 14s linear infinite;
@@ -95,21 +95,18 @@
 
         /* --- Keyframe Animations (Different Axes, Synchronized Stop) --- */
 
-        /* Rotates on X-axis (Outer Hex) */
         @keyframes rotateXSync {
             0% { transform: translate(-50%, -50%) rotateX(0deg); }
             95% { transform: translate(-50%, -50%) rotateX(342deg); }
             100% { transform: translate(-50%, -50%) rotateX(360deg); }
         }
 
-        /* Rotates on Y-axis (Middle Hex) */
         @keyframes rotateYSync {
             0% { transform: translate(-50%, -50%) rotateY(0deg); }
             95% { transform: translate(-50%, -50%) rotateY(342deg); }
             100% { transform: translate(-50%, -50%) rotateY(360deg); }
         }
 
-        /* Rotates on Z-axis (Inner Hex) */
         @keyframes rotateZSync {
             0% { transform: translate(-50%, -50%) rotateZ(0deg); }
             95% { transform: translate(-50%, -50%) rotateZ(342deg); }
