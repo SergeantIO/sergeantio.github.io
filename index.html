@@ -1,4 +1,13 @@
-*, *:before, *:after {
+<!DOCTYPE html>
+<html>
+  <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CSS only loaders is still the buzz now so I imported one of my tests.">
+    <meta name="author" content="Markus Mafz">
+    <meta name="github" content="headquarter8302">
+    <title>A hexagon shaped loader with only CSS | one-html-page-challenge</title>
+    <style>
+    *, *:before, *:after {
     box-sizing: border-box;
     }
     @keyframes loader {
@@ -23,8 +32,7 @@
     width: 3.5rem;
     height: 3.5rem;
     border: 5px solid white;
-    /* border-radius: 50%; <--- REMOVED */
-    /* ADDED the clip-path property for hexagon shape */
+    /* Changed from border-radius: 50%; to clip-path for a hexagon shape */
     clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
     animation: loader 1.5s infinite;
     animation-timing-function: cubic-bezier(1,0,0,1);
@@ -40,3 +48,11 @@
     .ring:nth-child(3) {
     animation-delay: 500ms;
     }
+    </style>
+  </head>
+  <body>
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+  </body>
+</html>
