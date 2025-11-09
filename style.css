@@ -1,66 +1,59 @@
-/* General body and background settings */
-body, html {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  background-color: black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* --- Base Page Styles --- */
+body {
+    margin: 0;
+    font-family: sans-serif;
 }
 
-/* Loading screen wrapper */
+/* --- Loading Screen Overlay --- */
 .loading-screen {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  position: absolute;
+    /* Covers the entire viewport */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    /* Black background */
+    background-color: #000; 
+    /* Centers the loader using Flexbox */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Ensure it's on top of everything */
 }
 
-/* Möbius strip container */
-.mobius-strip {
-  width: 150px;
-  height: 150px;
-  position: relative;
-  transform-style: preserve-3d;
-  animation: rotateMobius 4s infinite linear;
+/* --- Placeholder Loader (Silver Rotating Circle) --- */
+.mobius-strip-loader {
+    /* Define size and silver color */
+    width: 80px;
+    height: 80px;
+    border: 8px solid transparent;
+    border-top-color: #C0C0C0; /* Silver top border */
+    border-radius: 50%;
+    
+    /* Apply the rotation animation */
+    animation: spin 1.5s linear infinite;
+    
+    /* Placeholder for the strip element (optional styling) */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-/* The actual Möbius strip (a twisted ribbon) */
-.strip {
-  width: 200px;
-  height: 20px;
-  background: silver;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform-origin: center;
-  transform: rotateX(90deg) translateZ(0);
-  border-radius: 10px;
-  animation: twist 4s infinite linear;
+/* The inner div can be used for the actual Möbius strip construction */
+.strip-element {
+    /* Example: a simple silver dot inside the spinner */
+    width: 20px;
+    height: 20px;
+    background-color: #C0C0C0; /* Silver */
+    border-radius: 50%;
 }
 
-/* Animation for rotating the Möbius strip */
-@keyframes rotateMobius {
-  0% {
-    transform: rotateY(0deg);
-  }
-  100% {
-    transform: rotateY(360deg);
-  }
+/* --- Rotation Keyframes --- */
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
 }
 
-/* Keyframes for the twisting effect */
-@keyframes twist {
-  0% {
-    transform: rotateY(0deg) rotateX(0deg);
-  }
-  50% {
-    transform: rotateY(180deg) rotateX(180deg);
-  }
-  100% {
-    transform: rotateY(360deg) rotateX(0deg);
-  }
-}
+/* Optional: Hide the loading screen with JavaScript when page content is ready */
+/* .loading-screen.hidden { display: none; } */
