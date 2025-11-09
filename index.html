@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Rotating Hexagons - Outline Stability Fix</title>
+    <title>3D Rotating Hexagons - Transparent Interior</title>
     <style>
         /* --- Global Setup --- */
         body {
@@ -20,81 +20,62 @@
         /* --- Hexagon Container and Setup --- */
         .hexagon-container {
             position: relative;
-            /* Base size for the largest hexagon */
             width: 200px; 
             height: 200px;
             transform-style: preserve-3d;
         }
         
-        /* --- Hexagon Construction (Outline Stability Fix) --- */
+        /* --- Hexagon Construction (Transparent Interior Fix) --- */
         
-        /* Hexagon Outer (The white glowing line) */
         .hexagon {
             position: absolute;
             top: 50%;
             left: 50%;
             width: 100%;
             height: 100%;
+            
             transform-style: preserve-3d;
             box-sizing: border-box;
             
-            /* Apply the glow to the entire shape */
-            box-shadow: 0 0 5px rgba(255, 255, 255, 0.8),
-                        0 0 10px rgba(255, 255, 255, 0.6),
-                        0 0 15px rgba(255, 255, 255, 0.4);
-            
-            /* Clip the outer element to the hexagon shape */
+            /* Clip the element to the hexagon shape */
             clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
             
-            /* This is the white color that creates the line */
-            background-color: white; 
+            /* The element itself is a thick white line with a transparent center */
+            background-color: transparent; 
+            border: 5px solid white; 
+            
+            /* Filter for the glow effect. This works better than box-shadow on clip-path shapes. */
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8))
+                    drop-shadow(0 0 10px rgba(255, 255, 255, 0.6))
+                    drop-shadow(0 0 15px rgba(255, 255, 255, 0.4));
         }
-
-        /* Hexagon Inner (The black center cut-out) */
-        .hexagon::before {
-            content: "";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            /* Make the inner element slightly smaller to reveal the white border */
-            width: 90%; 
-            height: 90%;
-            transform: translate(-50%, -50%);
-            
-            /* Clip the inner element to the hexagon shape */
-            clip-path: polygon(50% 0%, 95% 25%, 95% 75%, 50% 100%, 5% 75%, 5% 25%);
-            
-            /* This is the black color that cuts out the center */
-            background-color: #000; 
-            
-            /* This needs to be preserved for the 3D rotation to work correctly */
-            transform-style: preserve-3d;
-        }
-
 
         /* --- Individual Hexagon Scaling and Animation (Different Axes) --- */
 
         /* Hexagon 1: Rotates on X-axis (100% size) */
         .hexagon:nth-child(1) {
+            /* Ensuring a solid white border by setting background white and using a transparent pseudo-element */
+            border: 5px solid white;
             transform: translate(-50%, -50%) scale(1); 
             animation: rotateXSync 10s linear infinite;
         }
 
         /* Hexagon 2: Rotates on Y-axis (80% size) */
         .hexagon:nth-child(2) {
+            border: 5px solid white;
             transform: translate(-50%, -50%) scale(0.8); 
             animation: rotateYSync 12s linear infinite;
         }
 
         /* Hexagon 3: Rotates on Z-axis (60% size) */
         .hexagon:nth-child(3) {
+            border: 5px solid white;
             transform: translate(-50%, -50%) scale(0.6); 
             animation: rotateZSync 14s linear infinite;
         }
 
         /* --- Keyframe Animations (Synchronized Stop) --- */
-        /* The `scale` value is hardcoded into the keyframes now for stability */
-
+        
         @keyframes rotateXSync {
             0% { transform: translate(-50%, -50%) scale(1) rotateX(0deg); }
             95% { transform: translate(-50%, -50%) scale(1) rotateX(342deg); }
