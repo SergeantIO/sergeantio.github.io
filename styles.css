@@ -78,4 +78,3 @@ body {
 .hexagon:nth-child(7) {
     transform: rotate(300deg) translateX(var(--radius)) rotate(-300deg);
 }
-
